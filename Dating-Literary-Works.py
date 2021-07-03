@@ -14,6 +14,22 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 
+
+
+
+
+#ENTER LOCATION OF TEXT FILES HERE:
+filesLocation = "C:/Users/josob/Documents/Uni/Non-Uni/Code/GitHub/Dating Dickens' Literary Works/Texts"
+
+
+filesLocation = filesLocation.replace("\\", "/")
+if filesLocation[-1] != "/":
+    filesLocation+="/" 
+    
+    
+    
+    
+    
 #format plots
 plt.style.use("seaborn")
 plt.rc('axes', titlesize=18)     # fontsize of the axes title
@@ -22,8 +38,8 @@ plt.rc('xtick', labelsize=15)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=15)    # fontsize of the tick labels
 plt.rc('figure', titlesize=18)  # fontsize of the figure title
 
-def importFile(filePath): #function to read in and format each text
-    with open(filePath, "r") as file:
+def importFile(fileName): #function to read in and format each text
+    with open(filesLocation+fileName, "r") as file:
         fileText = file.read().replace("\n\n", " ") 
     fileText=fileText.replace("\'", "'")
     fileText=fileText.replace("\n", " ")
@@ -31,46 +47,47 @@ def importFile(filePath): #function to read in and format each text
     fileText=fileText.replace("  ", " ")
     return fileText
 
-#import the extract files and create some other versions in new variables
+
+#import the files containing extracts and create some other versions in new variables
 
 #training set
 
-bleak = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/BLEAKH.TXT")
+bleak = importFile("BLEAKH.TXT")
 bleaklim=bleak[:4116] #some extracts are shorter than others, sometimes this limited version will be needed as a countermeasure
 bleakTok=nltk.word_tokenize(bleak) #separate into words
 bleakComps=np.array(nltk.pos_tag(nltk.word_tokenize(bleak))) #array of these words and their word types (noun, adjective etc)
 bleakNopunc=bleak.translate(str.maketrans('', '', string.punctuation)) #without punctuation
 
 
-copper = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/COPPER.TXT")
+copper = importFile("COPPER.TXT")
 copperlim=copper[:4116]
 copperTok=nltk.word_tokenize(copper)
 copperComps=np.array(nltk.pos_tag(nltk.word_tokenize(copper)))
 copperNopunc=copper.translate(str.maketrans('', '', string.punctuation))
 
 
-ldorit = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/LDORIT.TXT")
+ldorit = importFile("LDORIT.TXT")
 ldoritlim=ldorit[:4116]
 ldoritTok=nltk.word_tokenize(ldorit)
 ldoritComps=np.array(nltk.pos_tag(nltk.word_tokenize(ldorit)))
 ldoritNopunc=ldorit.translate(str.maketrans('', '', string.punctuation))
 
 
-mdrood = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/MDROOD.TXT")
+mdrood = importFile("MDROOD.TXT")
 mdroodlim=mdrood[:4116]
 mdroodTok=nltk.word_tokenize(mdrood)
 mdroodComps=np.array(nltk.pos_tag(nltk.word_tokenize(mdrood)))
 mdroodNopunc=mdrood.translate(str.maketrans('', '', string.punctuation))
 
 
-oldcshop = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/OLDCSHOP.TXT")
+oldcshop = importFile("OLDCSHOP.TXT")
 oldcshoplim=oldcshop[:4116]
 oldcshopTok=nltk.word_tokenize(oldcshop)
 oldcshopComps=np.array(nltk.pos_tag(nltk.word_tokenize(oldcshop)))
 oldcshopNopunc=oldcshop.translate(str.maketrans('', '', string.punctuation))
 
 
-thepp = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/THEPP.TXT")
+thepp = importFile("THEPP.TXT")
 thepplim=thepp[:4116]
 theppTok=nltk.word_tokenize(thepp)
 theppComps=np.array(nltk.pos_tag(nltk.word_tokenize(thepp)))
@@ -78,29 +95,34 @@ theppNopunc=thepp.translate(str.maketrans('', '', string.punctuation))
 
 
 #testing set
-
-great = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/GREATEX.TXT")
+"""
+files are cut down to be a similar length to others. Lengths around 8000 are chosen. 
+They aren't exactly 8000 due to an original inefficiency that was only noticed after analysis was started. 
+Although the results would likely be mostly the same, the original values were kept so the results from the
+analysis can be repeated. This also makes it more difficult to combine all the variable creation into a function.
+"""
+great = importFile("GREATEX.TXT")[:7999]
 greatlim=great[:4116]
 greatTok=nltk.word_tokenize(great)
 greatComps=np.array(nltk.pos_tag(nltk.word_tokenize(great)))
 greatNopunc=great.translate(str.maketrans('', '', string.punctuation))
 
 
-chimes = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/CHIMES.TXT")
+chimes = importFile("CHIMES.TXT")[:7967]
 chimeslim=chimes[:4116]
 chimesTok=nltk.word_tokenize(chimes)
 chimesComps=np.array(nltk.pos_tag(nltk.word_tokenize(chimes)))
 chimesNopunc=chimes.translate(str.maketrans('', '', string.punctuation))
 
 
-cities = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/CITIES.TXT")
+cities = importFile("CITIES.TXT")[:7995]
 citieslim=cities[:4116]
 citiesTok=nltk.word_tokenize(cities)
 citiesComps=np.array(nltk.pos_tag(nltk.word_tokenize(cities)))
 citiesNopunc=cities.translate(str.maketrans('', '', string.punctuation))
 
 
-haunted = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/HAUNTED.TXT")
+haunted = importFile("HAUNTED.TXT")[:7979]
 hauntedlim=haunted[:4116]
 hauntedTok=nltk.word_tokenize(haunted)
 hauntedComps=np.array(nltk.pos_tag(nltk.word_tokenize(haunted)))
@@ -109,27 +131,27 @@ hauntedNopunc=haunted.translate(str.maketrans('', '', string.punctuation))
 
 #unknowns
 
-ourmf = importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/OURMF.TXT")
+ourmf = importFile("OURMF.TXT")
 ourmflim=ourmf[:4116]
 ourmfTok=nltk.word_tokenize(ourmf)
 ourmfComps=np.array(nltk.pos_tag(nltk.word_tokenize(ourmf)))
 ourmfNopunc=ourmf.translate(str.maketrans('', '', string.punctuation))
 
 
-hardt=importFile("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/HARDT.TXT")
+hardt=importFile("HARDT.TXT")
 hardtlim=hardt[:4116]
 hardtTok=nltk.word_tokenize(hardt)
 hardtComps=np.array(nltk.pos_tag(nltk.word_tokenize(hardt)))
 hardtNopunc=hardt.translate(str.maketrans('', '', string.punctuation))
 
 
-    
+#combining created variables into lists
 allTok=[theppTok,oldcshopTok,chimesTok,hauntedTok,copperTok,bleakTok,hardtTok,ldoritTok,citiesTok,greatTok,ourmfTok,mdroodTok]
 allToklim=[nltk.word_tokenize(thepplim),nltk.word_tokenize(oldcshoplim),nltk.word_tokenize(chimeslim),nltk.word_tokenize(hauntedlim),nltk.word_tokenize(copperlim),nltk.word_tokenize(bleaklim),nltk.word_tokenize(hardtlim),nltk.word_tokenize(ldoritlim),nltk.word_tokenize(citieslim),nltk.word_tokenize(greatlim),nltk.word_tokenize(ourmflim),nltk.word_tokenize(mdroodlim)]
 nopuncTok=[nltk.word_tokenize(theppNopunc),nltk.word_tokenize(oldcshopNopunc),nltk.word_tokenize(chimesNopunc),nltk.word_tokenize(hauntedNopunc),nltk.word_tokenize(copperNopunc),nltk.word_tokenize(bleakNopunc),nltk.word_tokenize(hardtNopunc),nltk.word_tokenize(ldoritNopunc),nltk.word_tokenize(citiesNopunc),nltk.word_tokenize(greatNopunc),nltk.word_tokenize(ourmfNopunc),nltk.word_tokenize(mdroodNopunc)]
 allLens=[len(thepp),len(oldcshop),len(chimes),len(haunted),len(copper),len(bleak),len(hardt),len(ldorit),len(cities),len(great),len(ourmf),len(mdrood)]
 allNltkTok=[theppComps,oldcshopComps,chimesComps,hauntedComps,copperComps,bleakComps,hardtComps,ldoritComps,citiesComps,greatComps,ourmfComps,mdroodComps]
-ordYears=[1836,1840,1844,1848,1849,1852,1854,1855,1859,1860,1864,1870]
+ordYears=[1836,1840,1844,1848,1849,1852,1854,1855,1859,1860,1864,1870]#years of publication of these books
 
 
 #find average word length for each book
@@ -229,76 +251,83 @@ for i in range(len(allNltkTok)):
 
 
 
-columns=["wordLen","uniqueWords","puncTotalNum","puncTypesNum","sentenceNum"]#+nltkTypes
-scaler=StandardScaler()
 
-df=pd.DataFrame(np.concatenate([np.reshape(allLenAvgs, [12,1]), np.reshape(uniqueTotals, [12,1]), np.reshape(puncTotals, [12,1]), np.reshape(puncTypes, [12,1]), np.reshape(sentenceTotals, [12,1]) ],1))# ,  nltkTypeTotals],1))
+#column headings for each feature found above
+allColumns=["wordLen","uniqueWords","puncTotalNum","puncTypesNum","sentenceNum"]+nltkTypes
+
+#dataframe of all the features
+df=pd.DataFrame(np.concatenate([np.reshape(allLenAvgs, [12,1]), np.reshape(uniqueTotals, [12,1]), np.reshape(puncTotals, [12,1]), np.reshape(puncTypes, [12,1]), np.reshape(sentenceTotals, [12,1]) ,  nltkTypeTotals],1))
+scaler=StandardScaler()
 scaler.fit(df)
-features=pd.DataFrame(scaler.transform(df),columns=columns,index=["thepp","oldcshop","chimes","haunted","copper","bleak","hardt","ldorit","cities","great","ourmf","mdrood"])
-testBooks=features.iloc[[2,3,8,9]]
-testBooksY5=np.array([2,3,5,5])
+
+#year of publication for testing and training books
 testBooksY10=np.array([1,2,3,3])
 testBooksY20=np.array([1,1,2,2])
-newBooks=features.iloc[[6,10]]
-features=features.drop(["chimes","hardt","great","ourmf","haunted","cities"])
-y5=np.array([1,1,3,4,4,7])
 y10=np.array([1,1,2,2,3,4])
 y20=np.array([1,1,1,2,2,2])
+
+#function to get the features for specific columns and 
+def varFeatureDefine(columns):
+    X=pd.DataFrame(scaler.transform(df),columns=allColumns,index=["thepp","oldcshop","chimes","haunted","copper","bleak","hardt","ldorit","cities","great","ourmf","mdrood"])
+    X=X[columns]
+    testBooks=X.iloc[[2,3,8,9]]
+    X=X.drop(["chimes","hardt","great","ourmf","haunted","cities"])
+    return X, testBooks
+
+
+#tests of different combinations of features for best prediction. Reasons for these features can be found in the .pdf/.tex report
+columnSets=[allColumns, allColumns[:5], allColumns[:2] + [allColumns[4]], allColumns[:2]]
 
 
 #LDA
 lda=LDA()
-lda.fit(features,y20)
+qda=QDA()
+lda10, lda20, qda20 = [], [], []
 
-lda.predict(features)
-lda.score(features,y20)
-lda.score(testBooks,testBooksY20)
-lda.predict(testBooks)
+for i in columnSets:
+    features, testBooks = varFeatureDefine(i)
+    lda.fit(features,y10)
+    lda10.append(lda.score(testBooks,testBooksY10))
+    
+    lda.fit(features,y20)
+    lda20.append(lda.score(testBooks,testBooksY20))
+    
+    qda.fit(features,y20)
+    qda20.append(qda.score(testBooks,testBooksY20))
+    
 
-lda.predict(newBooks)
+""" ACTUAL RESULT
+ALL
+y10, 50%, [2,2] should be [2,3]
+y20, 50%, [1,2] should be [2,2]
 
+WITHOUT NLTK
+y10, 50%, [1,3]
+y20, 100%, [2,2]
 
-""" WITH NLTK
-On features,
-y5, 67%, not great
-y10, 83%, not bad
-y20, 67%, somehow worse?
+ONLY WORDLEN, UNIQUE WORDS AND SENTENCELEN 
+y10, 50%, [2,4]
+y20, 50%, [2,1]
 
-#On testBooks BEFORE 4 testBooks 
-#y5, [1,1], 0%, but impossible for it to get right since trained on y5=[1,1,3,4,4,7], but correct is [2,5]
-#y10, [1,1] 50% should be [1,3]
-#y20, [1,1] 50% should be [1,2], seems to think they are both early books, they are 1844 and 1860 though
+ONLY WORDLEN AND UNIQUE WORDS
+y10, 50%, [2,4]
+y20, 0%, [1,1]
+"""
 
-
-After 4 testBooks,
-y5, [1,1,4,1] 0% should be [2,3,5,5] but impossible to get 2 and 5 so unfair
+"""
+WITH NLTK
 y10, [1,1,2,1] 25% should be [1,2,3,3] 
 y20, [1,1,2,1], 75% should be [1,1,2,2] 
 
 WITHOUT NLTK
-On features,
-y5, 50%
-y10, 67%
-y20, 83%
-4 books,
-y5, 0%, [1, 4, 1, 4] should be [2,3,5,5] but impossible to get 2 and 5 so unfair
 y10, 50%, [1, 2, 1, 2] should be [1,2,3,3]
 y20, 25%, [2, 2, 1, 2] should be [1,1,2,2]
 
-ONLY WORDLEN AND SENTENCELEN
-4 books,
-y5, 0%, [1, 1, 1, 4] should be [2,3,5,5] but impossible to get 2 and 5 so unfair
-y10, 75%, [1, 2, 1, 3] should be [1,2,3,3]
-y20, 75%, [1, 1, 1, 2] should be [1,1,2,2]
-
 ONLY WORDLEN, UNIQUE WORDS AND SENTENCELEN 
-4 books,
-y5, didn't test
 y10, 25%, [1, 1, 1, 4] should be [1,2,3,3]
 y20, 75%, [1, 1, 1, 2] should be [1,1,2,2]
 
 ONLY WORDLEN AND UNIQUE WORDS
-4 books,
 y10, 25%, [1, 1, 1, 4]
 y20, 50%, [2, 2, 2, 2]
 """
@@ -352,10 +381,6 @@ WITHOUT NLTK
 4 books,
 y20, 50%, [2, 2, 2, 2] should be [1,1,2,2]
 
-ONLY WORDLEN AND SENTENCELEN
-4 books,
-y20, 75%, [1, 2, 2, 2] should be [1,1,2,2]
-
 ONLY WORDLEN, UNIQUE WORDS AND SENTENCELEN 
 4 books,
 y20, 50%, [1, 1, 1, 1] should be [1,1,2,2]
@@ -376,10 +401,9 @@ y20, 50%, [1, 2, 1, 2]
 
 #Decision tree
 treeclf=DecisionTreeClassifier(max_depth=2)
-treeclf.fit(features,y10)
+treeclf.fit(features,y20)
 
-metrics.accuracy_score(y20,treeclf.predict(features))
-treeclf.predict(features)
+features, testBooks = varFeatureDefine(columnSets[2])
 
 print(metrics.accuracy_score(testBooksY10,treeclf.predict(testBooks)))
 treeclf.predict(testBooks)
@@ -397,9 +421,9 @@ for i in range(x):
 treeclfScore/x
 
 #loop and get range scores
-x=500
+x=200
 scores=[]
-for j in range(1,11):
+for j in range(2,11):
     treeclfScore=0
     treeclf=DecisionTreeClassifier(max_depth=j)
     for i in range(x):
@@ -412,7 +436,7 @@ plt.plot(scores[:,0],scores[:,1])
 plt.xlabel("Max Depth")
 plt.ylabel("Accuracy %")
 plt.title("Decision Tree Accuracy by Max Depth (20 year)")
-#plt.savefig("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/treeclf20.png")
+#plt.savefig("C:/Users/josob/Documents/Uni/3rd Year/MAS360/P4/")
 plt.show()
 
 """ ACTUAL RESULT
@@ -832,51 +856,3 @@ plt.title("Scree Plot: Books PCA")
 #plt.savefig("C:/Users/josob/Documents/Uni/3rd Year/")
 plt.show()
 
-
-#word length - maybe plot the distribution, look at skewness
-#number of unique words
-#sentence length - maybe same as punc (no. of [. ! ?])
-#number of types of words and puncs
-#number of types of punctuation
-#natural language toolkit types of words
-
-#number of each type of punctuation
-    #https://jerichowriters.com/punctuation-writers/
-#number of specific words - perhaps "and", "really", "very" (weak words?)...
-    #https://mybookcave.com/authorpost/17-weak-words-to-avoid-in-your-writing/
-    #https://thewritepractice.com/better-writer-now/
-    #https://annerallen.com/2017/06/filter-words-and-phrases-to-avoid-in-writing/
-
-
-#Can I use more data? - find other books, full books
-#My plan is to use measures such as (above), is there any other way of doing it? Otherwise what measures do you suggest?
-#Can I summarise the data with a single continuous variable (time) via machine learning
-
-
-#order:                chapter/book   chapter title y/n   hyphen       5-year  10-year  20-year(before/after 1850)
-#thepp 1836            chapter        yes                 no           1       1        1
-#oldcshop 1840         chapter        no                  no           1       1        1
-#copper 1849           chapter        yes                 no           3       2        1
-#bleak 1852            chapter        yes                 no           4       2        2
-#(hardt unknown (1854)        book           yes                 yes)   4       2        2
-#ldorit 1855           book           yes                 no           4       3        2
-#(ourmf unknown (1864)        book           yes                 no)    6       3        2
-#mdrood 1870           chapter        yes                 yes          7       4        2
-
-#y5=[1,1,3,4,4,4,6,7]
-#y10=[1,1,2,2,2,3,3,4]
-#y20=[1,1,1,2,2,2,2,2]
-
-#chimes 1844           chapter                                         2       1        1
-#great  1860           chapter                                         5       3        2
-
-#y5=[1,1,2,3,4,4,4,5,6,7]
-#y10=[1,1,1,2,2,2,3,3,3,4]
-#y20=[1,1,1,1,2,2,2,2,2,2]
-
-#haunted 1848                                                          3       2        1
-#cities  1859                                                          5       3        2
-
-#y5=[1,1,2,3,3,4,4,4,5,5,6,7]
-#y10=[1,1,1,2,2,2,2,3,3,3,3,4]
-#y20=[1,1,1,1,1,2,2,2,2,2,2,2]
